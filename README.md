@@ -55,7 +55,9 @@ you should really use a Java IDE, of course. To run from maven do this:
 
         mvn jetty:run
 
-This should start the Jetty web server with the skeleton app, and open a browser into it.
+This should start the Jetty web server with the skeleton app. To access, go to:
+
+http://localhost:8082/ui/
 
 *warning* Do not forget to do the maven build in the toplevel directory whenever you change something! Maven is
 quite the disaster as tools go, and building "too low" or "too little" will give you incomprehensible bugs and
