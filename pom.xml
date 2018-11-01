@@ -36,8 +36,10 @@
 		<!-- JDK properties -->
 		<source.jdk.version>1.8</source.jdk.version>
 		<target.jdk.version>1.8</target.jdk.version>
-		<ecj.version>3.12.3</ecj.version>
-		<kotlin.version>1.1.1</kotlin.version>
+		<!-- JDK properties -->
+		<jdk.version>1.8</jdk.version>
+		<ecj.version>3.13.102</ecj.version>
+		<kotlin.version>1.2.31</kotlin.version>
 
 		<!-- Plugin versions -->
 		<maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
@@ -62,6 +64,7 @@
 		<jackson.version>2.7.2</jackson.version>
 		<jackson.hibernate>2.7.2</jackson.hibernate>
 		<bouncycastle.version>1.57</bouncycastle.version>
+		<hibernate.core.version>5.2.10.Final</hibernate.core.version>
 	</properties>
 
 	<prerequisites>
@@ -215,7 +218,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${hibernate.core.version}</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->

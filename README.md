@@ -61,7 +61,7 @@ This should start the Jetty web server with the skeleton app, and open a browser
 quite the disaster as tools go, and building "too low" or "too little" will give you incomprehensible bugs and
 a headache.
 
-# Using IntelliJ with the skeletom app
+# Using IntelliJ with the skeleton app
 
 Jetbrains IntelliJ Idea can natively read Maven's poms and once initialized compiles way faster - and with infinitely 
 better error support. To run the skeleton app "out of the box" from IntelliJ you must have the Ultimate edition. You

@@ -34,7 +34,7 @@ abstract public class AbstractDbEntity implements IIdentifyable<String> {
 	static public final String pMODIFIEDBY = "modifiedBy";
 
 	@GeneratedValue(generator = "uuid3")
-	@GenericGenerator(name = "uuid3", strategy = "my.domui.app.core.db.UUIDGenerator3")
+	@GenericGenerator(name = "uuid3", strategy = "to.etc.domui.hibernate.idgen.UUIDGenerator23")
 	@Id
 	@Column(name = "id", length = 32, nullable = false)
 	@Nullable @Override public String getId() {
