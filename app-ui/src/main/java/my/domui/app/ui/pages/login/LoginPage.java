@@ -23,7 +23,7 @@ import to.etc.util.StringTool;
  * Created on 30-7-17.
  */
 public class LoginPage extends UrlPage {
-	int					m_failcount;
+	private int	m_failcount;
 
 	static public final String	FORCE_TOP	=
 		"\nif(parent.location.href != self.location.href) {\n"		// Make sure we're not in a frame
