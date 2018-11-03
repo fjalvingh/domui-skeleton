@@ -48,6 +48,9 @@ public class UserEditPage extends BasicPage {
 	}
 
 	private void save() throws Exception {
+		if (bindErrors()) {
+			return;
+		}
 		//-- Password change?
 		String p1 = getPassword1();
 		String p2 = getPassword2();
