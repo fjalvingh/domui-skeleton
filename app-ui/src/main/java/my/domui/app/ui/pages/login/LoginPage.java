@@ -2,7 +2,7 @@ package my.domui.app.ui.pages.login;
 
 import my.domui.app.core.Constants;
 import to.etc.domui.component.buttons.DefaultButton;
-import to.etc.domui.component.misc.FaIcon;
+import to.etc.domui.component.misc.Icon;
 import to.etc.domui.component.misc.VerticalSpacer;
 import to.etc.domui.dom.css.DisplayType;
 import to.etc.domui.dom.header.HeaderContributor;
@@ -70,7 +70,7 @@ public class LoginPage extends UrlPage {
 		Input emailIn = new Input();
 		emailIn.setPlaceHolder("email");
 		Label emailL = new Label();
-		emailL.add(new FaIcon(FaIcon.faUser));
+		emailL.add(Icon.faUser.createNode());
 		emailL.setForTarget(emailIn);
 		field.add(emailL);
 		field.add(emailIn);
@@ -82,7 +82,7 @@ public class LoginPage extends UrlPage {
 		pwIn.setInputType("password");
 		pwIn.setPlaceHolder("password");
 		Label pwL = new Label();
-		pwL.add(new FaIcon(FaIcon.faLock));
+		pwL.add(Icon.faLock.createNode());
 		pwL.setForTarget(pwIn);
 		field.add(pwL);
 		field.add(pwIn);

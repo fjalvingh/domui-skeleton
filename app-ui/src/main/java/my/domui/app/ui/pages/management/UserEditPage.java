@@ -8,7 +8,7 @@ import to.etc.domui.annotations.UIRights;
 import to.etc.domui.annotations.UIUrlParameter;
 import to.etc.domui.component.layout.ButtonBar;
 import to.etc.domui.component.layout.ContentPanel;
-import to.etc.domui.component.misc.FaIcon;
+import to.etc.domui.component.misc.Icon;
 import to.etc.domui.component.misc.MsgBox;
 import to.etc.domui.component2.form4.FormBuilder;
 import to.etc.domui.state.UIGoto;
@@ -43,7 +43,7 @@ public class UserEditPage extends BasicPage {
 
 		ButtonBar bb = new ButtonBar();
 		add(bb);
-		bb.addButton("Save", FaIcon.faFloppyO, a -> save()).css("is-primary");
+		bb.addButton("Save", Icon.faFloppyO, a -> save()).css("is-primary");
 		bb.addBackButton();
 	}
 
