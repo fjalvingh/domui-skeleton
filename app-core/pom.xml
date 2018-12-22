@@ -45,6 +45,13 @@
 			<artifactId>to.etc.domui.hibutil</artifactId>
 		</dependency>
 
+		<!-- Oddity which seems to be necessary for IntelliJ to pick up the annotation processor. -->
+		<dependency>
+			<groupId>to.etc.domui</groupId>
+			<artifactId>property-annotations-processor</artifactId>
+			<version>${domui.version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
@@ -88,4 +95,34 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<annotationProcessors>
+						<annotationProcessor>db.annotationprocessing.PropertyAnnotationProcessor</annotationProcessor>
+					</annotationProcessors>
+					<annotationProcessorPaths>
+						<dependency>
+							<groupId>to.etc.domui</groupId>
+							<artifactId>property-annotations-processor</artifactId>
+							<version>${domui.version}</version>
+						</dependency>
+					</annotationProcessorPaths>
+				</configuration>
+
+				<dependencies>
+					<dependency>
+						<groupId>to.etc.domui</groupId>
+						<artifactId>property-annotations-processor</artifactId>
+						<version>${domui.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>

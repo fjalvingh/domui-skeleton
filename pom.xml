@@ -178,6 +178,18 @@
 			</dependency>
 
 			<dependency>
+				<groupId>to.etc</groupId>
+				<artifactId>annotations</artifactId>
+				<version>${domui.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>to.etc.domui</groupId>
+				<artifactId>property-annotations-processor</artifactId>
+				<version>${domui.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>to.etc.domui</groupId>
 				<artifactId>to.etc.domui.hibutil</artifactId>
 				<version>${domui.version}</version>

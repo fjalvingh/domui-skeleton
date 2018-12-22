@@ -39,6 +39,13 @@
 			<version>1.2-SNAPSHOT</version>
 		</dependency>
 
+		<!-- Oddity which seems to be necessary for IntelliJ to pick up the annotation processor. -->
+		<dependency>
+			<groupId>to.etc.domui</groupId>
+			<artifactId>property-annotations-processor</artifactId>
+			<version>${domui.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>my.domui.app</groupId>
 			<artifactId>app-core</artifactId>
@@ -118,7 +125,33 @@
 					<generateGitPropertiesFilename>${project.build.outputDirectory}/appversion.git.properties</generateGitPropertiesFilename>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<annotationProcessors>
+						<annotationProcessor>db.annotationprocessing.PropertyAnnotationProcessor</annotationProcessor>
+					</annotationProcessors>
+					<annotationProcessorPaths>
+						<dependency>
+							<groupId>to.etc.domui</groupId>
+							<artifactId>property-annotations-processor</artifactId>
+							<version>${domui.version}</version>
+						</dependency>
+					</annotationProcessorPaths>
+				</configuration>
+
+				<dependencies>
+					<dependency>
+						<groupId>to.etc.domui</groupId>
+						<artifactId>property-annotations-processor</artifactId>
+						<version>${domui.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
 		</plugins>
 	</build>
-
 </project>
