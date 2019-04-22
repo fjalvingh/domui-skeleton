@@ -133,7 +133,7 @@ public class Application extends DomApplication {
 	}
 
 	private void initializeDatabase(File propFile, Properties properties) throws Exception {
-		DbUtil.initialize(propFile, properties, "app");
+		DbUtil.initialize(propFile, properties, Constants.APPCODE);
 	}
 
 	private void defineLoginAndLoginPage(LoginAuthenticator loginAuthenticator) {
