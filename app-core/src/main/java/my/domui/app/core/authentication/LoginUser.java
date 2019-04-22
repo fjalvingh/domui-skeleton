@@ -4,13 +4,13 @@ import my.domui.app.core.db.DbGroup;
 import my.domui.app.core.db.DbGroupMember;
 import my.domui.app.core.db.DbPermission;
 import my.domui.app.core.db.DbUser;
-import to.etc.domui.login.IUser;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+import to.etc.domui.login.IUser2;
 import to.etc.domui.state.UIContext;
 import to.etc.webapp.query.QDataContext;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +22,7 @@ import java.util.Set;
  * @author <a href="mailto:jal@etc.to">Frits Jalvingh</a>
  */
 @NonNullByDefault
-public class LoginUser implements IUser {
+public class LoginUser implements IUser2 {
 	@NonNull
 	private final String m_loginName;
 
@@ -109,18 +109,12 @@ public class LoginUser implements IUser {
 
 	/**
 	 * Returns T if this user has this right assigned.
-	 *
-	 * @see to.etc.domui.login.IUser#hasRight(String)
 	 */
 	@Override
 	public boolean hasRight(@NonNull String r) {
 		return m_permissionNameSet.contains(r) || m_permissionNameSet.contains(Rights.ADMIN);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @see to.etc.domui.login.IUser#hasRight(String, Object)
-	 */
 	@Override
 	public <T> boolean hasRight(@NonNull String r, @Nullable T dataElement) {
 		return true;
