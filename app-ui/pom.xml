@@ -57,6 +57,14 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Database drivers -->
 		<dependency>
 			<groupId>org.postgresql</groupId>

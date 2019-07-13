@@ -57,7 +57,7 @@
 
 		<jetty.version>9.4.12.v20180830</jetty.version>
 		<hsqldb.version>2.4.0</hsqldb.version>
-		<javax.servlet.version>2.5</javax.servlet.version>
+		<javax.servlet.version>4.0.1</javax.servlet.version>
 		<antlr.runtime.version>4.7</antlr.runtime.version>
 		<cxf.version>3.2.1</cxf.version>
 		<jackson.version>2.7.2</jackson.version>
@@ -82,8 +82,9 @@
 			<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
+				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet.version}</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.eclipse.jdt/org.eclipse.jdt.annotation -->
@@ -310,6 +311,27 @@
 				<version>${cxf.version}</version>
 			</dependency>
 
+			<!-- JAXB dependencies since 11 -->
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-core</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.activation</groupId>
+				<artifactId>activation</artifactId>
+				<version>1.1.1</version>
+			</dependency>
 
 			<!-- TEST DEPENDENCIES -->
 			<dependency>
