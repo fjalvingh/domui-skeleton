@@ -63,7 +63,7 @@
 		<jackson.version>2.7.2</jackson.version>
 		<jackson.hibernate>2.7.2</jackson.hibernate>
 		<bouncycastle.version>1.57</bouncycastle.version>
-		<hibernate.core.version>5.2.10.Final</hibernate.core.version>
+		<hibernate.core.version>5.4.24.Final</hibernate.core.version>
 	</properties>
 
 	<prerequisites>
