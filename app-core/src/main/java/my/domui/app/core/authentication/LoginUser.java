@@ -115,9 +115,12 @@ public class LoginUser implements IUser2 {
 		return m_permissionNameSet.contains(r) || m_permissionNameSet.contains(Rights.ADMIN);
 	}
 
+	/**
+	 * Data bound rights are not implemented here, so this just returns the plain right.
+	 */
 	@Override
-	public <T> boolean hasRight(@NonNull String r, @Nullable T dataElement) {
-		return true;
+	public <T> boolean hasDataRight(@NonNull String r, @Nullable T dataElement) {
+		return hasRight(r);
 	}
 
 	public Set<DbGroup> getGroupSet() {

@@ -33,42 +33,45 @@
 
 		<jetty.http.port>8082</jetty.http.port>
 
-		<!-- JDK properties -->
-		<source.jdk.version>11</source.jdk.version>
-		<target.jdk.version>11</target.jdk.version>
-		<ecj.version>3.16.0</ecj.version>
-		<kotlin.version>1.2.31</kotlin.version>
+		<!-- JDK properties. DomUI builds on 21; so does this. -->
+		<source.jdk.version>21</source.jdk.version>
+		<target.jdk.version>21</target.jdk.version>
+		<ecj.version>3.36.0</ecj.version>
 
 		<!-- Plugin versions -->
-		<maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
 		<plexus-compiler-eclipse.version>2.8.5</plexus-compiler-eclipse.version>
-		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-		<maven-war-plugin.version>3.0.0</maven-war-plugin.version>
-		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-		<maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
-		<maven-pmd-plugin.version>3.6</maven-pmd-plugin.version>
-		<maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
-		<maven-shade-plugin.version>2.4.3</maven-shade-plugin.version>
-		<maven-assembly-plugin.version>2.6</maven-assembly-plugin.version>
+		<maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+		<maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
+		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+		<git-commit-id-plugin.version>9.0.1</git-commit-id-plugin.version>
 
-		<!-- DomUI -->
+		<!-- DomUI. This is the version built from the "domui" submodule. -->
 		<domui.version>1.2-SNAPSHOT</domui.version>
 
-		<jetty.version>9.4.12.v20180830</jetty.version>
-		<hsqldb.version>2.4.0</hsqldb.version>
-		<javax.servlet.version>4.0.1</javax.servlet.version>
-		<antlr.runtime.version>4.7</antlr.runtime.version>
-		<cxf.version>3.2.1</cxf.version>
-		<jackson.version>2.7.2</jackson.version>
-		<jackson.hibernate>2.7.2</jackson.hibernate>
-		<bouncycastle.version>1.57</bouncycastle.version>
-		<hibernate.core.version>5.2.10.Final</hibernate.core.version>
-	</properties>
+		<!--
+			The versions below are the ones DomUI itself builds against; keeping them
+			the same prevents two versions of the same library on the classpath.
+		-->
+		<jakarta.servlet.version>6.1.0</jakarta.servlet.version>
+		<hibernate.core.version>7.2.9.Final</hibernate.core.version>
+		<jetty.version>11.0.26</jetty.version>
+		<hsqldb.version>2.7.1</hsqldb.version>
+		<bouncycastle.version>1.84</bouncycastle.version>
+		<slf4j.version>1.7.36</slf4j.version>
+		<commons-codec.version>1.15</commons-codec.version>
+		<commons-lang3.version>3.18.0</commons-lang3.version>
+		<commons-io.version>2.21.0</commons-io.version>
 
-	<prerequisites>
-		<maven>3.5.0</maven>
-	</prerequisites>
+		<!-- Only this application uses these -->
+		<commons-text.version>1.15.0</commons-text.version>
+		<flyway.version>13.4.0</flyway.version>
+		<postgresql.version>42.7.13</postgresql.version>
+		<junit.version>4.13.2</junit.version>
+		<mockito.version>5.23.0</mockito.version>
+	</properties>
 
 	<modules>
 		<module>domui</module>
@@ -79,11 +82,10 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
 			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>${javax.servlet.version}</version>
+				<groupId>jakarta.servlet</groupId>
+				<artifactId>jakarta.servlet-api</artifactId>
+				<version>${jakarta.servlet.version}</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -91,40 +93,33 @@
 			<dependency>
 				<groupId>org.eclipse.jdt</groupId>
 				<artifactId>org.eclipse.jdt.annotation</artifactId>
-				<version>1.1.0</version>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/args4j/args4j -->
-			<dependency>
-				<groupId>args4j</groupId>
-				<artifactId>args4j</artifactId>
-				<version>2.33</version>
+				<version>1.1.100</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.25</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jul-to-slf4j</artifactId>
-				<version>1.7.25</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 
-			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
+			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on -->
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcpkix-jdk15on</artifactId>
+				<artifactId>bcpkix-jdk18on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
 
-			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk15on</artifactId>
+				<artifactId>bcprov-jdk18on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
 
@@ -132,42 +127,28 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.6</version>
+				<version>${commons-lang3.version}</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
-				<version>2.5</version>
+				<version>${commons-io.version}</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
-				<version>1.10</version>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-csv</artifactId>
-				<version>1.4</version>
+				<version>${commons-codec.version}</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-text</artifactId>
-				<version>1.1</version>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.antlr/antlr4-runtime -->
-			<dependency>
-				<groupId>org.antlr</groupId>
-				<artifactId>antlr4-runtime</artifactId>
-				<version>${antlr.runtime.version}</version>
+				<version>${commons-text.version}</version>
 			</dependency>
 
 			<!-- DOMUI -->
@@ -213,31 +194,38 @@
 				<version>${domui.version}</version>
 			</dependency>
 
+			<!-- The icon set. DomUI registers it by itself once it is on the classpath. -->
 			<dependency>
-				<groupId>org.eclipse.jdt</groupId>
-				<artifactId>org.eclipse.jdt.annotation</artifactId>
-				<version>1.1.100</version>
+				<groupId>to.etc.domui</groupId>
+				<artifactId>fontawesome6free</artifactId>
+				<version>${domui.version}</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
 			<dependency>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-core</artifactId>
-				<version>5.0.6</version>
+				<version>${flyway.version}</version>
 			</dependency>
 
-			<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+			<!-- Since Flyway 10 every database needs its own module -->
 			<dependency>
-				<groupId>org.hibernate</groupId>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-database-postgresql</artifactId>
+				<version>${flyway.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-database-hsqldb</artifactId>
+				<version>${flyway.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
+			<dependency>
+				<groupId>org.hibernate.orm</groupId>
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.core.version}</version>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
-			<dependency>
-				<groupId>org.javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>3.20.0-GA</version>
 			</dependency>
 
 			<!-- Databases -->
@@ -246,28 +234,7 @@
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
-				<version>42.1.3</version>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>6.0.6</version>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-			<dependency>
-				<groupId>com.microsoft.sqlserver</groupId>
-				<artifactId>mssql-jdbc</artifactId>
-				<version>6.2.1.jre8</version>
-			</dependency>
-
-			<!-- From binary dependencies -->
-			<dependency>
-				<groupId>oracle</groupId>
-				<artifactId>ojdbc</artifactId>
-				<version>11.2.0.4</version>
+				<version>${postgresql.version}</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
@@ -277,96 +244,24 @@
 				<version>${hsqldb.version}</version>
 			</dependency>
 
-			<!-- WEB SERVICES DEPENDENCIES -->
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-rs-client</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-transports-http-hc</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.jaxrs</groupId>
-				<artifactId>jackson-jaxrs-json-provider</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.datatype</groupId>
-				<artifactId>jackson-datatype-hibernate5</artifactId>
-				<version>${jackson.hibernate}</version>
-			</dependency>
-
-			<!-- Adds ability to generate wadl -->
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-rs-service-description</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-
-			<!-- JAXB dependencies since 11 -->
-			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>2.3.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-core</artifactId>
-				<version>2.3.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-impl</artifactId>
-				<version>2.3.0</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.activation</groupId>
-				<artifactId>activation</artifactId>
-				<version>1.1.1</version>
-			</dependency>
-
 			<!-- TEST DEPENDENCIES -->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.12</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>2.10.0</version>
+				<version>${mockito.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
-		<plugins>
-			<!-- Antlr -->
-			<plugin>
-				<groupId>org.antlr</groupId>
-				<artifactId>antlr4-maven-plugin</artifactId>
-				<version>4.7</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>antlr4</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -374,23 +269,11 @@
 					<artifactId>maven-dependency-plugin</artifactId>
 				</plugin>
 
-				<!-- jal 20170414 Switch JDK compiler with ECJ -->
-				<!--<plugin>-->
-				<!--<groupId>org.apache.maven.plugins</groupId>-->
-				<!--<artifactId>maven-compiler-plugin</artifactId>-->
-				<!--<version>${maven-compiler-plugin.version}</version>-->
-				<!--<configuration>-->
-				<!--<source>${source.jdk.version}</source>-->
-				<!--<target>${target.jdk.version}</target>-->
-				<!--<compilerArgs>-->
-				<!--<arg>-Xlint:all</arg>-->
-				<!--<arg>-Werror</arg>-->
-				<!--</compilerArgs>-->
-				<!--<showWarnings>true</showWarnings>-->
-				<!--<showDeprecation>true</showDeprecation>-->
-				<!--</configuration>-->
-				<!--</plugin>-->
-
+				<!--
+					jal 20170414 Switch the JDK compiler with ECJ, the Eclipse batch compiler.
+					This is what makes the @NonNull/@Nullable annotations into compile time
+					null checks; the rules live in every module's .settings/org.eclipse.jdt.core.prefs.
+				-->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -400,12 +283,10 @@
 						<source>${source.jdk.version}</source>
 						<target>${target.jdk.version}</target>
 						<!-- Passing arguments is a trainwreck, see https://issues.apache.org/jira/browse/MCOMPILER-123 -->
-						<compilerArguments>
-							<properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>
-						</compilerArguments>
-						<!--<compilerArgs>-->
-						<!--<arg>-properties .settings/org.eclipse.jdt.core.prefs</arg>-->
-						<!--</compilerArgs>-->
+						<compilerArgs>
+							<arg>-properties</arg>
+							<arg>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</arg>
+						</compilerArgs>
 						<showWarnings>true</showWarnings>
 						<showDeprecation>true</showDeprecation>
 					</configuration>
@@ -446,14 +327,14 @@
 					<version>${maven-javadoc-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>appassembler-maven-plugin</artifactId>
-					<version>${appassembler-maven-plugin.version}</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>${maven-assembly-plugin.version}</version>
+					<groupId>io.github.git-commit-id</groupId>
+					<artifactId>git-commit-id-maven-plugin</artifactId>
+					<version>${git-commit-id-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.jetty</groupId>

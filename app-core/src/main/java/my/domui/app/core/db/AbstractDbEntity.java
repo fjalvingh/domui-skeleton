@@ -4,10 +4,10 @@ import org.hibernate.annotations.GenericGenerator;
 import to.etc.webapp.query.IIdentifyable;
 
 import org.eclipse.jdt.annotation.Nullable;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * This is an example of a base class that can be used for entities,
@@ -36,7 +36,7 @@ abstract public class AbstractDbEntity implements IIdentifyable<String> {
 	@GeneratedValue(generator = "uuid3")
 	@GenericGenerator(name = "uuid3", strategy = "to.etc.domui.hibernate.idgen.UUIDGenerator23")
 	@Id
-	@Column(name = "id", length = 32, nullable = false)
+	@Column(name = "id", length = 23, nullable = false)
 	@Nullable @Override public String getId() {
 		return m_id;
 	}

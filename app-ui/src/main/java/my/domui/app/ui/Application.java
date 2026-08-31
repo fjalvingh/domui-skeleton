@@ -19,16 +19,9 @@ import to.etc.util.StringTool;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import javax.crypto.Cipher;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -36,7 +29,7 @@ import java.util.logging.Logger;
 
 public class Application extends DomApplication {
 
-	static private final Locale DUTCH = new Locale("nl", "NL");
+	static private final Locale DUTCH = Locale.of("nl", "NL");
 
 	@Nullable @Override public Class<? extends UrlPage> getRootPage() {
 		return HomePage.class;
@@ -51,7 +44,6 @@ public class Application extends DomApplication {
 		SLF4JBridgeHandler.install();
 		Logger.getLogger("global").setLevel(Level.FINEST);
 
-		fixKeyLength();
 		StatisticsRequestListener.setForceEncoding("utf-8");
 		StatisticsRequestListener.setSessionStatistics(true);
 		setKeepAliveInterval(2 * 60 * 1000);
@@ -60,16 +52,7 @@ public class Application extends DomApplication {
 
 		addHeaderContributor(HeaderContributor.loadStylesheet("css/appstyle.scss"), 10);
 
-		if(false) {
-			// FA 5 alpha lacked a lot of icons
-			addHeaderContributor(HeaderContributor.loadStylesheet("css/font-awesome-core.css"), 10);
-			addHeaderContributor(HeaderContributor.loadStylesheet("css/font-awesome-regular.css"), 10);
-			addHeaderContributor(HeaderContributor.loadStylesheet("css/font-awesome-light.css"), 10);
-			//addHeaderContributor(HeaderContributor.loadStylesheet("css/"), 10);
-		} else {
-			addHeaderContributor(HeaderContributor.loadStylesheet("css/font-awesome.min.css"), 10);
-		}
-		addHeaderContributor(new FaviconContributor("img/favicon.png"), 100);
+		addHeaderContributor(new FaviconContributor("img/favicon.ico"), 100);
 
 		//-- Read properties file, then initialize the database and other stuff
 		File propertyFile = getPropertyFile();
@@ -89,15 +72,6 @@ public class Application extends DomApplication {
 
 	@NonNull @Override public Locale getRequestLocale(HttpServletRequest request) {
 		return DUTCH;
-	}
-
-	private Properties getProperties(File propertyFile) throws Exception {
-
-		Properties p = new Properties();
-		try(InputStream is = new FileInputStream(propertyFile)) {
-			p.load(is);
-		}
-		return p;
 	}
 
 	@NonNull private File getPropertyFile() {
@@ -204,44 +178,6 @@ public class Application extends DomApplication {
 		//});
 	}
 
-
-	public static void fixKeyLength() {
-		String errorString = "Failed manually overriding key-length permissions.";
-		int newMaxKeyLength;
-		try {
-			if((newMaxKeyLength = Cipher.getMaxAllowedKeyLength("AES")) < 256) {
-				Class<?> c = Class.forName("javax.crypto.CryptoAllPermissionCollection");
-				Constructor<?> con = c.getDeclaredConstructor();
-				con.setAccessible(true);
-				Object allPermissionCollection = con.newInstance();
-				Field f = c.getDeclaredField("all_allowed");
-				f.setAccessible(true);
-				f.setBoolean(allPermissionCollection, true);
-
-				c = Class.forName("javax.crypto.CryptoPermissions");
-				con = c.getDeclaredConstructor();
-				con.setAccessible(true);
-				Object allPermissions = con.newInstance();
-				f = c.getDeclaredField("perms");
-				f.setAccessible(true);
-				((Map<String, Object>) f.get(allPermissions)).put("*", allPermissionCollection);
-
-				c = Class.forName("javax.crypto.JceSecurityManager");
-				f = c.getDeclaredField("defaultPolicy");
-				f.setAccessible(true);
-				Field mf = Field.class.getDeclaredField("modifiers");
-				mf.setAccessible(true);
-				mf.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-				f.set(null, allPermissions);
-
-				newMaxKeyLength = Cipher.getMaxAllowedKeyLength("AES");
-			}
-		} catch(Exception e) {
-			throw new RuntimeException(errorString, e);
-		}
-		if(newMaxKeyLength < 256)
-			throw new RuntimeException(errorString); // hack failed
-	}
 
 	@Override protected void destroy() {
 	}

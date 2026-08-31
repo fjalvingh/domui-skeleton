@@ -1,4 +1,4 @@
 [submodule "domui"]
 	path = domui
 	url = https://github.com/fjalvingh/domui
-	branch = master
+	branch = skarp-master

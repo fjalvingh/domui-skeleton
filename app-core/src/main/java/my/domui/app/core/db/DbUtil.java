@@ -3,7 +3,9 @@ package my.domui.app.core.db;
 import my.domui.app.core.Constants;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.MigrationInfo;
-import org.flywaydb.core.api.callback.FlywayCallback;
+import org.flywaydb.core.api.callback.BaseCallback;
+import org.flywaydb.core.api.callback.Context;
+import org.flywaydb.core.api.callback.Event;
 import to.etc.dbpool.ConnectionPool;
 import to.etc.dbpool.PoolManager;
 import to.etc.domui.hibernate.config.HibernateConfigurator;
@@ -18,7 +20,6 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import javax.sql.DataSource;
 import java.io.File;
-import java.sql.Connection;
 import java.util.Properties;
 
 /**
@@ -93,7 +94,7 @@ public class DbUtil {
 		System.out.println("Database path is " + path);
 
 		ConnectionPool pool = PoolManager.getInstance().definePool(
-			"app", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:file:" + path, "sa", "", null
+			"app", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:file:" + path, "sa", "", null, null
 		);
 		pool.initialize();
 		return pool;
@@ -105,12 +106,13 @@ public class DbUtil {
 	 * V1__create_database.sql file under resources/db/updates.
 	 */
 	public static void updateDatabase(DataSource ds, SystemDatabaseType dbtype) {
-		Flyway fly = new Flyway();
-		fly.setDataSource(ds);
-		fly.setLocations("db/updates/common", "db/updates/" + dbtype.name());
-		fly.setSchemas("PUBLIC");			// UPPERCASE - IMPORTANT
-		fly.setCallbacks(new MyFlywayCallback());
-		fly.migrate();
+		Flyway.configure()
+			.dataSource(ds)
+			.locations("db/updates/common", "db/updates/" + dbtype.name())
+			.schemas("PUBLIC")							// UPPERCASE - IMPORTANT
+			.callbacks(new MigrationLogger())
+			.load()
+			.migrate();
 	}
 
 	public static void initialize() throws Exception {
@@ -135,79 +137,26 @@ public class DbUtil {
 		}
 	}
 
+	/**
+	 * Callback showing what Flyway is doing. Flyway calls this for every event it
+	 * supports; we only report the migration ones.
+	 */
 	@NonNullByDefault(false)
-	private static class MyFlywayCallback implements FlywayCallback {
-		@Override public void beforeClean(Connection connection) {
+	private static final class MigrationLogger extends BaseCallback {
+		@Override public void handle(Event event, Context context) {
+			switch(event) {
+				case BEFORE_MIGRATE -> System.out.println("FlyWay migration starting");
 
-		}
+				case BEFORE_EACH_MIGRATE -> {
+					MigrationInfo info = context.getMigrationInfo();
+					System.out.println("Migrating to " + (info == null ? "?" : info.getScript()));
+				}
 
-		@Override public void beforeUndo(Connection connection) {
+				case AFTER_MIGRATE -> System.out.println("FlyWay migration done");
 
-		}
-
-		@Override public void beforeEachUndo(Connection connection, MigrationInfo migrationInfo) {
-
-		}
-
-		@Override public void afterEachUndo(Connection connection, MigrationInfo migrationInfo) {
-
-		}
-
-		@Override public void afterUndo(Connection connection) {
-
-		}
-
-		@Override public void afterClean(Connection connection) {
-
-		}
-
-		@Override public void beforeMigrate(Connection connection) {
-			System.out.println("FlyWay migration starting");
-		}
-
-		@Override public void afterMigrate(Connection connection) {
-			System.out.println("FlyWay migration done");
-
-		}
-
-		@Override public void beforeEachMigrate(Connection connection, MigrationInfo migrationInfo) {
-			System.out.println("Migrating to " + migrationInfo.getScript());
-		}
-
-		@Override public void afterEachMigrate(Connection connection, MigrationInfo migrationInfo) {
-
-		}
-
-		@Override public void beforeValidate(Connection connection) {
-
-		}
-
-		@Override public void afterValidate(Connection connection) {
-
-		}
-
-		@Override public void beforeBaseline(Connection connection) {
-
-		}
-
-		@Override public void afterBaseline(Connection connection) {
-
-		}
-
-		@Override public void beforeRepair(Connection connection) {
-
-		}
-
-		@Override public void afterRepair(Connection connection) {
-
-		}
-
-		@Override public void beforeInfo(Connection connection) {
-
-		}
-
-		@Override public void afterInfo(Connection connection) {
-
+				default -> {
+				}
+			}
 		}
 	}
 }

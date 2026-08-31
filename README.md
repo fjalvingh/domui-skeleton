@@ -16,30 +16,26 @@ contains the web related resources (like images, static pages and whatnot).
 This is just an example structure; is it of course easy to add more modules using the normal Maven module support. 
 Ok, not too easy, then ;)
 
-This repository has multiple branches (well, it will have once DomUI 2.0 has been released):
+The master branch is the only branch that is maintained. It tracks the DomUI development branch
+(`skarp-master`) and includes DomUI as a __submodule__: it gets cloned together with this repository
+and is built as part of the same Maven reactor. This means one has to learn about submodules - but it
+makes maintaining DomUI and the skeleton app way easier.
 
-* branches like "2.0" are release branches, and are supposed to work with the DomUI release of the same version. 
-These branches can still change though when fixes are made on released versions. These branches include DomUI by adding
-it to maven's dependencies. This means DomUI is added as a set of jars.
-
-* the master branch is related to the DomUI master branch and is the tip of new development. As such it is less stable 
-but of course is very modern ;). The master branch includes DomUI as a __submodule__: as such it gets cloned together with
-this repository. This means one has to learn about submodules - but it makes maintaining DomUI and the skeleton app way easier.
+You need __Java 21__ and __Maven 3.9 or newer__ to build this.
 
 ## Using the skeleton app
 
-To use the skeleton app you clone it from the repository, using the branch that relates to the DomUI version you want to use.
-After that you can change the name of the modules in the poms and whatever else in the code, starting your own application
+To use the skeleton app you clone it from the repository. After that you can change the name of the modules in the poms and whatever else in the code, starting your own application
 by fleshing out the skeleton. You can easily push this new code to a new repository of your own.
 
-Let's try it. Start by cloning the repository (we will take the master branch) in a new directory called "petshop":
+Let's try it. Start by cloning the repository - `--recursive`, to get the DomUI submodule with it - in a new directory called "petshop":
 
     git clone -b master --recursive https://github.com/fjalvingh/domui-skeleton petshop
     
 This will mumble some cryptic things to the screen and takes a while. You should now have a new directory "petshop".
 cd in there and start a maven build:
 
-mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip=true
+mvn clean install -DskipTests -Dmaven.javadoc.skip=true
 
 (the skips speed up the build, and running the tests means installing software before they run).
 With a bit of luck this will end with BUILD SUCCESS after some 20 seconds.
@@ -80,22 +76,13 @@ they will be used by IntelliJ.
 * Select the directory that you cloned in (petshop in the example), and let IntelliJ finish its work. Wait until you no
 longer see a progress bar in the bottom right statusbar area before continuing.
 
-* In the right side gutter of the screen select the vertical "Maven" view, then press the refresh button (first icon
-on the toolbar). If the Maven view tells you that there are no pom's loaded then add the pom in the root of the petshop
-directory to it; that will automatically find all other modules.
-
-* In the IDE, go to File -> Settings, then go to Build, Execution, Deployment -> Build tools -> Maven -> Importing
-
-* In that screen find "Import maven projects automatically" and check the box. This makes IntelliJ re-import poms
-automatically on changes, and is a huge time saver. Leave the screen with OK.
-
 * Do a build (Build -> Rebuild Project). We only do this once; usually a normal Build suffices.
 
 You might have some errors during the above build, depending on your configuration and your version of IntelliJ. 
 The most common ones are:
 
-* "No JDK for project": Use File -> Project Structure, then make sure that the correct JDK (8, 10 or 11 depending
-on the DomUI release) is selected, and that the correct language level has been selected.
+* "No JDK for project": Use File -> Project Structure, then make sure that a JDK 21 is selected, and that
+the project language level is 21 too.
 
 * "Invalid flag: -properties": DomUI uses the Eclipse Batch compiler (ecj) for its compilation, because that compiler
 is way faster than the normal Javac compiler, and has a lot of extra options that make building Java software safer.
@@ -118,7 +105,8 @@ to make it manually these are the steps:
 * In the top right of the screen, press the + icon on the toolbar. Then select the Tomcat -> Local template. If you do not see 
 it click the "More items" thingy that calls itself irrelevant but is not.
 
-* Fill in a name for the config (like "petshop"), select a Tomcat 8.x installation (or add it using the three ... button, then select).
+* Fill in a name for the config (like "petshop"), select a Tomcat 11 installation (or add it using the three ... button, then select).
+DomUI uses the `jakarta.servlet` API, so Tomcat 10 is the oldest version that can run it.
 
 * Click the Deployment tab, then click the green + at the right side. Pick the "app-web exploded" artifact.
 

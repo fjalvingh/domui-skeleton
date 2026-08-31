@@ -35,34 +35,19 @@
 		<finalName>domui-app</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<webResources>
-						<resource>
-							<directory>src/main/webapp</directory>
-							<filtering>true</filtering>
-							<includes>
-								<include>index.html</include>
-							</includes>
-						</resource>
-					</webResources>
-				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<configuration>
-					<scanIntervalSeconds>5</scanIntervalSeconds>
+					<!-- Rebuild-and-reload scan interval, in seconds -->
+					<scan>5</scan>
 					<stopPort>8089</stopPort>
 					<stopKey>bricked</stopKey>
 					<webApp>
-						<baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
-							<!--<resourcesAsCSV>${basedir}/../../shared/web/src/main/webapp,${basedir}/src/main/webapp</resourcesAsCSV>-->
-							<resourcesAsCSV>${basedir}/src/main/webapp</resourcesAsCSV>
-						</baseResource>
-						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
-						<containerIncludeJarPattern>^$</containerIncludeJarPattern>
 						<contextPath>/ui</contextPath>
 					</webApp>
 					<httpConnector>
